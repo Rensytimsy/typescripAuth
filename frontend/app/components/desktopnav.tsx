@@ -6,7 +6,7 @@ export default function DesktopNavigation(){
     return (
         <>
             <div className="w-full flex flex-row justify-around p-4 bg-blue-300 max-h-[60px]">
-                <div className="font-semibold">Logo</div>
+                <div className="font-semibold">AuthField</div>
                 <div>
                     <ul className="flex flex-row space-x-4">
                         <li>
