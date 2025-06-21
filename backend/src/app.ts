@@ -1,8 +1,17 @@
-import expres, { Request, Response } from "express";
+import express, { Request, Response, NextFunction } from "express";
+import cookieParser from "cookie-parser";
+import {errorHandler} from "./middleware/errorhandler.js"
+import UserRoutes from "../src/Routes/usersRoutes.js"
+import dotenv from "dotenv"
+dotenv.config();
 
-const app = expres();
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello world from app component!");
-});
+const app = express();
+app.use(cookieParser())
+app.use(express.json())
+
+
+app.use("/api/users", UserRoutes);
+//Next error handler
+app.use(errorHandler);  
 
 export default app;
