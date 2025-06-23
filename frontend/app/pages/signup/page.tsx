@@ -13,10 +13,16 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
+import axios from "axios";
+import { useEffect, useState } from "react"
+import { FaEyeSlash } from "react-icons/fa6";
+import { FaEye } from "react-icons/fa";
 
 
 
 export default function SignInPage(){
+    const [globalError, setGlobalError] = useState<string>("");
+    const [hidePassword, setHidePassword] = useState<boolean>(false);
 
     const form = useForm<z.infer<typeof UserSignUpSchema>>({
         resolver: zodResolver(UserSignUpSchema),
@@ -26,8 +32,13 @@ export default function SignInPage(){
         }
     });
 
-    const OnSubmit = (values: z.infer<typeof UserSignUpSchema>) => {
-        console.log(values);
+    const OnSubmit = async(values: z.infer<typeof UserSignUpSchema>) => {
+        try{
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/api/users/newuser`, values);
+            console.log(response.data);
+        }catch(error: any){
+            setGlobalError(error.response.data.message);
+        }
     }
 
     return(
@@ -87,11 +98,36 @@ export default function SignInPage(){
                                 <FormItem>
                                     <FormLabel>Password</FormLabel>
                                     <FormControl>
-                                        <Input 
-                                            {...field}
-                                            placeholder="Enter password...."
-                                            className="p-2 rounded-sm outline-none"
-                                        />
+                                        <div className="border">
+                                            <div className="w-full flex flex-row space-x-2">
+                                                {hidePassword ? <Input 
+                                                    {...field}
+                                                    placeholder="Enter password...."
+                                                    className="p-2 rounded-sm outline-none w-[85%] focus-visible:ring-0 border-none"
+                                                    type="password"
+                                                />
+                                                :
+                                                <Input 
+                                                    {...field}
+                                                    placeholder="Enter password...."
+                                                    className="p-2 rounded-sm outline-none w-[85%] focus-visible:ring-0 border-none"
+                                                    type="text"
+                                                />
+                                                }
+                                                
+                                                {hidePassword ? <FaEye 
+                                                size={20}
+                                                className="mt-2 cursor-pointer"
+                                                onClick={() => setHidePassword((prevState) => !prevState)}
+                                                /> 
+                                                : 
+                                                <FaEyeSlash 
+                                                size={20} 
+                                                className="mt-2 cursor-pointer"
+                                                onClick={() => setHidePassword((prevState) => !prevState)}
+                                                />}
+                                            </div>
+                                        </div>
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -110,6 +146,10 @@ export default function SignInPage(){
                         <button
                         className="w-full mt-4  border p-2 cursor-pointer bg-green-300 hover:bg-green-400"
                         >Login</button>
+
+                        <div className="mt-2 rounded-md">
+                            <p className="text-red-500">{globalError}</p>
+                        </div>
                     </form>
                 </Form>
             </div>
