@@ -39,6 +39,7 @@
     "eslint": "^9.29.0",
     "eslint-plugin-perfectionist": "^4.15.0",
     "mongoose": "^8.16.0",
+    "nodemon": "^3.1.10",
     "prettier": "^3.5.3",
     "prisma": "^6.10.1",
     "tsx": "^4.20.3",

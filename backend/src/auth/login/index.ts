@@ -25,7 +25,7 @@ export const UserLogin = async(req: Request, res: Response, next: NextFunction) 
         //if no user was found that then means that the user isn't registered
         if(!foundUser) {
             res.status(404).json({message: "User not found!"});
-        }
+        }   
 
         //if user exist then proceed to authenticate the user
         const jwtsecret:string = process.env.JWT_SECRET || ""

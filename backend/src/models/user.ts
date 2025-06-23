@@ -18,6 +18,10 @@ const User = new Schema<z.infer<typeof DbUserSchema>>({
     userAvatar: {
         type: String,
         required: true
+    },
+    admin: {
+        type: Boolean,
+        default: false
     }
 });
 
